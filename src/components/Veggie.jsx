@@ -14,16 +14,16 @@ const Veggie = () => {
 
   const getVeggie = async () => {
 
-    const check = localStorage.getItem('popular');
+    const check = localStorage.getItem('veggie');
 
     if(check) {
         setVeggie(JSON.parse(check));
     } else {
         const api = await fetch(
-          `https://api.spoonacular.com/recipes/random?apiKey=91f99408c375443e91b7b620da7867a9&number=10`
+          `https://api.spoonacular.com/recipes/random?apiKey=91f99408c375443e91b7b620da7867a9&number=10&tags=vegetarian`
         );
         const data = await api.json();
-        localStorage.setItem('popular', JSON.stringify(data.recipes));
+        localStorage.setItem('veggie', JSON.stringify(data.recipes));
         setVeggie(data.recipes);
         console.log(data.recipes);
     }
@@ -58,7 +58,7 @@ const Veggie = () => {
 }
 
 const Wrapper = styled.div`
-    margin : 1rem 2rem;
+    // margin : 1rem 2rem;
 `;
 
 const Card = styled.div`
