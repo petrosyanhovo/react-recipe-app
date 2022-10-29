@@ -13,29 +13,46 @@ const Popular = () => {
   }, [])
 
   const getPopular = async () => {
-    const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=10`);
-    const data = await api.json();
-    setPopular(data.recipes);
-    console.log(data.recipes);
+
+    const check = localStorage.getItem('popular');
+
+    if(check) {
+        setPopular(JSON.parse(check));
+    } else {
+        const api = await fetch(
+          `https://api.spoonacular.com/recipes/random?apiKey=91f99408c375443e91b7b620da7867a9&number=10`
+        );
+        const data = await api.json();
+        localStorage.setItem('popular', JSON.stringify(data.recipes));
+        setPopular(data.recipes);
+        console.log(data.recipes);
+    }
   }
 
   return (
     <div>
-        {popular.map((recipe) => {
-            return (
-              <Wrapper key={recipe.id}>
-                  <h3>Popular Picks</h3>
-                  {popular.map((recipe) => {
-                    return (
-                        <Card>
-                            <p>{recipe.title}</p>
-                            <img src={recipe.image} alt={recipe.title} />
-                        </Card>
-                    );
-                  })}
-              </Wrapper>
-            )
-        })}
+        <Wrapper>
+            <h3>Popular Picks</h3>
+            <Splide options={{
+              perPage: 4,
+              arrows : false,
+              pagination : false,
+              drag : 'free',
+              gap : "2rem",
+            }}>
+              {popular.map((recipe) => {
+                return (
+                  <SplideSlide key={recipe.id}>
+                    <Card>
+                        <p>{recipe.title}</p>
+                        <img src={recipe.image} alt={recipe.title} />
+                        <Gradient/>
+                    </Card>
+                  </SplideSlide>
+                );
+              })}
+            </Splide>
+        </Wrapper>
     </div>
   )
 }
@@ -51,7 +68,37 @@ const Card = styled.div`
 
     img {
       border-radius : 2rem;
+      width : 100%;
+      position : absolute;
+      left : 0;
+      // height : 100%;
+      object-fit : cover;
+    }
+    p {
+      position : absolute;
+      z-index:10;
+      // left : 50%;
+      bottom : 30%;
+      transform : translate (-50%, 0%);
+      color : white;
+      width : 100%;
+      text-align: center;
+      font-weight : 600;
+      font-size : 1rem;
+      height : 40%;
+      display : flex;
+      justify-content : center;
+      align-items: center;
     }
 `;
+
+const Gradient = styled.div`
+  z-index : 3;
+  position : absolute;
+  width : 100%;
+  height : 100%;
+  background : linear-gradient(rbga(0,0,0,0), rbg(0,0,0));
+
+`
 
 export default Popular
