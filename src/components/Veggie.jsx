@@ -32,7 +32,7 @@ const Veggie = () => {
   return (
     <div>
         <Wrapper>
-            <h3>Our Veggie</h3>
+            <h3>Our Vegetarian Picks</h3>
             <Splide options={{
               perPage: 3,
               arrows : false,
@@ -58,27 +58,28 @@ const Veggie = () => {
 }
 
 const Wrapper = styled.div`
-    margin : 4rem 0rem;
+    margin : 1rem 2rem;
 `;
 
 const Card = styled.div`
-    min-height : 25rem;
+    min-height : 14rem;
     border-radius : 2rem;
     overflow : hidden;
+    cursor : grab;
 
     img {
       border-radius : 2rem;
       width : 100%;
       position : absolute;
       left : 0;
-      // height : 100%;
+      height : 100%;
       object-fit : cover;
     }
     p {
       position : absolute;
       z-index:10;
       // left : 50%;
-      bottom : 30%;
+      bottom : -10%;
       transform : translate (-50%, 0%);
       color : white;
       width : 100%;
@@ -95,10 +96,12 @@ const Card = styled.div`
 const Gradient = styled.div`
   z-index : 3;
   position : absolute;
+  bottom : 0;
+  top : 0;
   width : 100%;
   height : 100%;
-  background : linear-gradient(rbga(0,0,0,0), rbg(0,0,0));
-
+  background:linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 188, 212, 0) 40%, rgba(238, 130, 238, 0) 100%);
+  border-radius : 2rem;
 `
 
 export default Veggie
