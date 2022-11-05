@@ -6,11 +6,13 @@ import styled from 'styled-components'
 const Recipe = () => {
   let params = useParams();
   const [details, setDetails] = useState({});
+  const [activeTab, setActiveTab] = useState("Instructions");
 
   const fetchDetails = async () => {
-    const data = await fetch(`httmps://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
+    const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`);
     const detailData = await data.json();
     setDetails(detailData);
+    console.log(detailData.extendedIngredients)
   };
 
   useEffect(() => {
@@ -23,8 +25,17 @@ const Recipe = () => {
         <img src={details.image} alt="" />
       </div>
       <Info>
-        <Button>Instructions</Button>
-        <Button>Ingredients</Button>
+        <Button className={activeTab === 'Instructions' ? 'active' : ''} onClick={()=>setActiveTab("Instructions")}>Instructions</Button>
+        <Button className={activeTab === 'Ingredients' ? 'active' : ''}  onClick={()=>setActiveTab("Ingredients")}>Ingredients</Button>
+        <div>
+          <h3 dangerouslySetInnerHTML={{__html:details.summary}} ></h3>
+          <h3 dangerouslySetInnerHTML={{__html:details.instructions}} ></h3>
+        </div>
+        <ul>
+          {details.extendedIngredients.map((ingredient) => (
+              <li key={ingredient.id}>{ingredient.original}</li>
+          ))}
+        </ul>
       </Info>
     </DetailWrapper>
   )
@@ -33,13 +44,16 @@ const Recipe = () => {
 const DetailWrapper = styled.div`
   margin-top : 10rem;
   margin-bottom : 5rem;
-  displa :flex;
+  display :flex;
   .active {
     background : linear-gradient(35deg, #494949, #313131);
     color : white;
   }
   h2 {
     margin-bottom : 2rem;
+  }
+  h3 {
+    line-height : 20px;
   }
   li {
     font-size : 1.2rem;
@@ -56,6 +70,7 @@ const Button = styled.button`
   border : 2px solid black;
   margin-right : 2rem;
   font-weight : 600;
+  cursor : pointer
 `
 const Info = styled.div`
   margin-left : 10rem;
