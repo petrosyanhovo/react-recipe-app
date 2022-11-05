@@ -27,15 +27,20 @@ const Recipe = () => {
       <Info>
         <Button className={activeTab === 'Instructions' ? 'active' : ''} onClick={()=>setActiveTab("Instructions")}>Instructions</Button>
         <Button className={activeTab === 'Ingredients' ? 'active' : ''}  onClick={()=>setActiveTab("Ingredients")}>Ingredients</Button>
-        <div>
-          <h3 dangerouslySetInnerHTML={{__html:details.summary}} ></h3>
-          <h3 dangerouslySetInnerHTML={{__html:details.instructions}} ></h3>
-        </div>
-        <ul>
-          {details.extendedIngredients.map((ingredient) => (
-              <li key={ingredient.id}>{ingredient.original}</li>
-          ))}
-        </ul>
+        {activeTab === 'Instructions' && (
+          <div>
+            <h3 dangerouslySetInnerHTML={{__html:details.summary}} ></h3>
+            <h3 dangerouslySetInnerHTML={{__html:details.instructions}} ></h3>
+          </div>
+        )}
+        {activeTab === 'Ingredients' && (
+            <ul>
+                {details.extendedIngredients.map((ingredient) => (
+                    <li key={ingredient.id}>{ingredient.original}</li>
+                ))}
+          </ul>
+        )}
+        
       </Info>
     </DetailWrapper>
   )
